@@ -120,6 +120,8 @@ main {
   background-position: center center;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  object-fit: cover;
   height: 500px;
 }
 
@@ -159,6 +161,7 @@ main {
   text-align: center;
   text-decoration: none;
   margin-top: 150px;
+  cursor: pointer;
 }
 
 .btn-welcome:hover {
