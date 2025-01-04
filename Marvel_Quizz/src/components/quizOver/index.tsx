@@ -1,65 +1,67 @@
-import React, {Fragment, useEffect, useState} from 'react'
-import { GiTrophyCup } from "react-icons/gi";
+import React, { Fragment, useEffect, useState } from 'react'
+import { GiTrophyCup } from "react-icons/gi"
 import axios from 'axios'
-import Modal from '../modale';
+import Modal from '../modale'
 
 const config = {
     apiKeyPublic: import.meta.env.VITE_REACT_APP_KEY_PUBLIC,
     apiKeyPrivate: import.meta.env.VITE_REACT_APP_KEY_PRIVATE,
     hash: import.meta.env.VITE_REACT_APP_HASH
-};
+}
 
-const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,quizLevel,percent,loadLevelQuestions}, ref) => {
-    
-    const [asked, setAsked] = useState([])
+const QuizOver = React.forwardRef(({ storeDataRef, levelName, score, maxQuestions, quizLevel, percent, loadLevelQuestions }, ref) => {
+    const [asked, setAsked] = useState<any[]>([])
     const [openModal, setOpenModal] = useState(false)
-    const [characterData, setCharacterData] = useState([])
+    const [characterData, setCharacterData] = useState<any[]>([])
     const [Loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setAsked(ref.current)
-        if(localStorage.getItem('modalData')) {
+        if (ref && 'current' in ref && ref.current) {
+            setAsked(ref.current)
+        }
+        if (localStorage.getItem('modalData')) {
             const date = localStorage.getItem('modalData')
             checkData(date)
         }
     }, [ref])
 
-    const checkData = (date) => {
-        const modalTime = Date.now() - parseInt(date)
-        const days = modalTime / (1000 * 3600 * 24)
-        if(days >= 15){
-            localStorage.clear()
-            localStorage.setItem('modalData', Date.now())
+    const checkData = (date: string | null) => {
+        if (date) {
+            const modalTime = Date.now() - parseInt(date)
+            const days = modalTime / (1000 * 3600 * 24)
+            if (days >= 15) {
+                localStorage.clear()
+                localStorage.setItem('modalData', Date.now().toString())
+            }
         }
-    } 
+    }
 
     const showModal = (id: number) => {
         setOpenModal(true)
 
-        if(localStorage.getItem(id)){
-            setCharacterData(JSON.parse(localStorage.getItem(id)))
+        if (localStorage.getItem(id.toString())) {
+            setCharacterData(JSON.parse(localStorage.getItem(id.toString())!))
             console.log('data from local storage', characterData)
             setLoading(false)
-        }else{
+        } else {
             axios
-            .get(`https://gateway.marvel.com/v1/public/characters/${id}?ts=1&apikey=${config.apiKeyPublic}&hash=${config.hash}`)
-            .then(response => {
-                setCharacterData(response.data)
-                setLoading(false)
-                localStorage.setItem(id, JSON.stringify(response.data))
-                if(!localStorage.getItem('modalData')){
-                    localStorage.setItem('modalData', Date.now())
-                }
-            })
-            .catch(error => console.error(error))
+                .get(`https://gateway.marvel.com/v1/public/characters/${id}?ts=1&apikey=${config.apiKeyPublic}&hash=${config.hash}`)
+                .then(response => {
+                    setCharacterData(response.data)
+                    setLoading(false)
+                    localStorage.setItem(id.toString(), JSON.stringify(response.data))
+                    if (!localStorage.getItem('modalData')) {
+                        localStorage.setItem('modalData', Date.now().toString())
+                    }
+                })
+                .catch(error => console.error(error))
         }
-
-       
     }
 
-    const capitalizerFirstLetter = (string) => {
+    const capitalizerFirstLetter = (string: string) => {
         return string.charAt(0).toUpperCase() + string.slice(1)
     }
+
     const closeModal = () => {
         setOpenModal(false)
         setLoading(true)
@@ -74,19 +76,18 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
                     quizLevel < levelName.length - 1 ? (
                         <Fragment>
                             <p className="successMsg">Bravo, vous avez réussi ! passez au niveau suivant</p>
-                            <button 
-                            onClick={() => loadLevelQuestions(quizLevel + 1)}
-                            className="btnResult success">Niveau Suivant</button>
+                            <button
+                                onClick={() => loadLevelQuestions(quizLevel + 1)}
+                                className="btnResult success">Niveau Suivant</button>
                         </Fragment>
                     ) : (
                         <Fragment>
-                            
                             <p className="successMsg">
-                                <GiTrophyCup size='50px'/>
+                                <GiTrophyCup size='50px' />
                                 Bravo, vous avez réussi ! vous êtes un expert</p>
-                            <button 
-                            onClick={() => loadLevelQuestions(0)}
-                            className="btnResult gameOver">Accueil</button>
+                            <button
+                                onClick={() => loadLevelQuestions(0)}
+                                className="btnResult gameOver">Accueil</button>
                         </Fragment>
                     )
                 }
@@ -100,7 +101,7 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
         <Fragment>
             <div className="stepsBtnContainer">
                 <p className="failureMsg">Vous avez échoué !</p>
-                <button 
+                <button
                     onClick={() => loadLevelQuestions(quizLevel)}
                     className="btnResult gameOver">
                     Essayez à nouveau
@@ -119,7 +120,7 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
                 <td>{question.question}</td>
                 <td>{question.answer}</td>
                 <td>
-                    <button 
+                    <button
                         onClick={() => showModal(question.heroId)}
                         className="btnInfo">Infos
                     </button>
@@ -128,14 +129,14 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
         ))
     ) : (
         <tr>
-            <td colSpan="3">
-                <p style={{textAlign: "center", color: "red"}}>
+            <td colSpan={3}>
+                <p style={{ textAlign: "center", color: "red" }}>
                     Pas de réponses !!!
                 </p>
             </td>
         </tr>
     )
-    
+
     const resultInModal = !Loading ? (
         <Fragment>
             <div className="modalHeader">
@@ -143,7 +144,7 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
             </div>
             <div className="modalBody">
                 <div className="comicImage">
-                    <img src={characterData.data.results[0].thumbnail.path+'.'+characterData.data.results[0].thumbnail.extension} alt={characterData.name} 
+                    <img src={characterData.data.results[0].thumbnail.path + '.' + characterData.data.results[0].thumbnail.extension} alt={characterData.name}
                     />
                     <p>{characterData.attributionText}</p>
                 </div>
@@ -154,21 +155,20 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
                         : <p>Description indisponible...</p>
                     }
                     <h3>Plus d'infos</h3>
-                    {characterData.data.results[0].urls.map((url, index) => (
+                    {characterData.data.results[0].urls.map((url: any, index: number) => (
                         <a
-                            key={index} 
-                            href={url.url} 
-                            target="_blank" 
+                            key={index}
+                            href={url.url}
+                            target="_blank"
                             rel="noreferrer"
-                            
-                            >
+                        >
                             {capitalizerFirstLetter(url.type)}
                         </a>
                     ))}
                 </div>
             </div>
             <div className="modalFooter">
-                <button className="modalBtn"  onClick={closeModal}>Fermer</button>
+                <button className="modalBtn" onClick={closeModal}>Fermer</button>
             </div>
         </Fragment>
     ) : (
@@ -206,7 +206,7 @@ const QuizOver =  React.forwardRef(({storeDataRef,levelName,score,maxQuestions,q
                     </tbody>
                 </table>
             </div>
-            <Modal showModal={openModal} closeModal={closeModal}> 
+            <Modal showModal={openModal} closeModal={closeModal}>
                 {resultInModal}
             </Modal>
         </Fragment>

@@ -7,8 +7,8 @@ import Logout from '../logout'
 import Quizz from '../quizz'
 
 function Welcome() {
-  const [userSession, setUserSession] = useState(null)
-  const [userData, setUserData] = useState<object>({})
+  const [userSession, setUserSession] = useState<any>(null)
+  const [userData, setUserData] = useState<{ pseudo: string }>({ pseudo: '' })
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function Welcome() {
           .then(doc => {
             if (doc.exists()) {
               const docData = doc.data()
-              setUserData(docData)
+              setUserData(docData as { pseudo: string })
             } else {
               navigate('/signup')
             }
