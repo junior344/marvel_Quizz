@@ -8,8 +8,17 @@ const config = {
     apiKeyPrivate: import.meta.env.VITE_REACT_APP_KEY_PRIVATE,
     hash: import.meta.env.VITE_REACT_APP_HASH
 }
-
-const QuizOver = React.forwardRef(({ storeDataRef, levelName, score, maxQuestions, quizLevel, percent, loadLevelQuestions }, ref) => {
+interface QuizOverProps {
+    storeDataRef: React.RefObject<any>;
+    levelName: string[];
+    score: number;
+    maxQuestions: number;
+    quizLevel: number;
+    percent: number;
+    loadLevelQuestions: (param: number) => void;
+}
+const QuizOver = React.forwardRef<unknown, QuizOverProps>((props, ref)=> {
+    const { storeDataRef, levelName, score, maxQuestions, quizLevel, percent, loadLevelQuestions } = props;
     const [asked, setAsked] = useState<any[]>([])
     const [openModal, setOpenModal] = useState(false)
     const [characterData, setCharacterData] = useState<any[]>([])

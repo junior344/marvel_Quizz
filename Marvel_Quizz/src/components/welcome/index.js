@@ -8,7 +8,7 @@ import Logout from '../logout';
 import Quizz from '../quizz';
 function Welcome() {
     const [userSession, setUserSession] = useState(null);
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState({ pseudo: '' });
     const navigate = useNavigate();
     useEffect(() => {
         const listener = onAuthStateChanged(Auth, user => {

@@ -34,6 +34,6 @@ function ForgetPassword() {
                                     fontSize: "0.9rem",
                                     fontWeight: "bold",
                                     letterSpacing: "1px"
-                                }, children: success }), _jsx("h2", { children: "Mot de passe oubli\u00E9" }), _jsxs("form", { onSubmit: handleSubmit, children: [_jsxs("div", { className: "inputBox", children: [_jsx("input", { onChange: e => setEmail(e.target.value), value: email, type: "email", id: "email", autoComplete: "off", required: true }), _jsx("label", { htmlFor: "email", children: "Email" })] }), _jsx("button", { disabled: disable, children: "R\u00E9cup\u00E9rer" })] }), _jsx("div", { className: "linkContainer", children: _jsx(Link, { className: "simpleLink", to: "/Login", children: "D\u00E9ja inscrit? Connect-vous." }) })] }) })] }) }));
+                                }, children: success }), _jsx("h2", { children: "Mot de passe oubli\u00E9" }), _jsxs("form", { onSubmit: handleSubmit, children: [_jsxs("div", { className: "inputBox", children: [_jsx("input", { onChange: e => setEmail(e.target.value), value: email, type: "email", id: "email", autoComplete: "off", required: true }), _jsx("label", { htmlFor: "email", children: "Email" })] }), _jsx("button", { disabled: disable, children: "R\u00E9cup\u00E9rer" })] }), _jsx("div", { className: "linkContainer", children: _jsx(Link, { className: "simpleLink", to: "/Login", children: "D\u00E9j\u00E0 inscrit? Connectez-vous." }) })] }) })] }) }));
 }
 export default ForgetPassword;
