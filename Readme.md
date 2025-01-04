@@ -81,6 +81,7 @@ Marvel Quiz est une application de quiz interactive basée sur l'univers Marvel.
   "vite": "^6.0.5"
 }
 ```
+# une apercu de la structure du projet
 ```bash
 marvel_Quizz/
 ├── public/
@@ -139,3 +140,7 @@ marvel_Quizz/
 ```bash
 npm run dev
 ```
+
+# Auteur
+
+([Josias Mbogle](https://www.linkedin.com/in/josias-mbogle/))
